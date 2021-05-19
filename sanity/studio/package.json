@@ -1,0 +1,33 @@
+{
+  "name": "vercelnuxtplayground",
+  "private": true,
+  "version": "1.0.0",
+  "description": "This directory is a brief example of a [Nuxt.js](https://nuxtjs.org) app that can be deployed with Vercel and zero configuration",
+  "main": "package.json",
+  "author": "Matthijs Brouwer <matthijs@artandflywork.org>",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "sanity start",
+    "build": "sanity build"
+  },
+  "keywords": [
+    "sanity"
+  ],
+  "dependencies": {
+    "@sanity/base": "^2.10.2",
+    "@sanity/components": "^2.2.6",
+    "@sanity/core": "^2.10.2",
+    "@sanity/default-layout": "^2.10.2",
+    "@sanity/default-login": "^2.8.0",
+    "@sanity/desk-tool": "^2.10.4",
+    "@sanity/vision": "^2.10.0",
+    "prop-types": "^15.7",
+    "react": "^17.0",
+    "react-dom": "^17.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mcbrwr/vercel-nuxt-playground.git"
+  }
+}

@@ -10,7 +10,10 @@
     "start": "nuxt start"
   },
   "dependencies": {
-    "nuxt": "^2.0.0"
+    "@sanity/client": "^2.8.0",
+    "@sanity/image-url": "^0.140.22",
+    "nuxt": "^2.0.0",
+    "sanity-blocks-vue-component": "^0.1.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

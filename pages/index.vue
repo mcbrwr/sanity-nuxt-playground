@@ -1,72 +1,107 @@
 <template>
-  <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        nuxtjs
-      </h1>
-      <h2 class="subtitle">
-        My astonishing Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
-    </div>
-  </div>
+  <main>
+    <nav>
+      <ul>
+        <li v-for="section in nav">
+          {{ section.title }}
+          <ul v-if="section.links">
+            <li v-for="link in section.links">
+              {{ link.title }}
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <h1>Checking this sanity shizzle out</h1>
+    <section class="articles" v-if="posts">
+      <article v-for="post in posts">
+        <h2>{{ post.title }}</h2>
+        <p class="post__author">{{ post.author }}</p>
+        <div class="article__text">
+          <block-content :blocks="post.body"/>
+        </div>
+      </article>
+    </section>
+  </main>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import sanity from "../sanity-config.js";
 
-export default {
-  components: {
-    Logo
+
+const query = `*[_type == "post"]{
+  _id,
+  title,
+  "author" : author->name,
+  body
+}[0...50]`;
+
+// get the nav named SomeNav
+const navigationTree = `*[name == 'SomeNav'][0]['sections'] {
+  ...,
+  sections[]{
+    ...,
+    target->{title, slug, _id},
+    links[]{
+      ...,
+      target->{title, slug, _id},
+      children[]{
+        ...,
+        target->{title, slug, _id}
+      }
+    }
   }
 }
+`
+
+export default {
+  name: "Home",
+  data() {
+    return {
+      loading: true,
+      posts: [],
+      nav: [],
+    };
+  },
+  created() {
+    this.fetchNav();
+    this.fetchPosts();
+  },
+  methods: {
+    fetchNav() {
+      this.error = this.nav = null;
+      this.loading = true;
+      sanity.fetch(navigationTree).then(
+        (nav) => {
+          this.loading = false;
+          this.nav = nav;
+        },
+        (error) => {
+          this.error = this.error + ' ' . error;
+        }
+      );
+    },
+    fetchPosts() {
+      this.error = this.post = null;
+      this.loading = true;
+      sanity.fetch(query).then(
+        (posts) => {
+          this.loading = false;
+          this.posts = posts;
+        },
+        (error) => {
+          this.error = this.error + ' ' . error;
+        }
+      );
+    },
+  },
+};
 </script>
 
 <style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
+  body {
+    max-width: 38em;
+    margin: 3em auto;
+    padding: 1em;
+  }
 </style>
