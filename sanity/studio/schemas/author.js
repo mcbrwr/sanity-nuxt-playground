@@ -1,48 +1,41 @@
 export default {
-  name: 'author',
-  title: 'Author',
-  type: 'document',
+  name: "author",
+  title: "Author",
+  type: "document",
+  liveEdit: false,
   fields: [
     {
-      name: 'name',
-      title: 'Name',
-      type: 'string',
+      name: "name",
+      title: "Name",
+      type: "string",
+      validation: (Rule) => Rule.required(),
     },
     {
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
-      options: {
-        source: 'name',
-        maxLength: 96,
-      },
+      name: "link",
+      title: "Author Link",
+      description:
+        "Used as a link with your name, commonly would link to your email or social media of choice.",
+      type: "url",
+      validation: (Rule) =>
+        Rule.required().uri({
+          allowRelative: true,
+          scheme: ["https", "http", "mailto"],
+        }),
     },
     {
-      name: 'image',
-      title: 'Image',
-      type: 'image',
+      name: "image",
+      title: "Image",
+      type: "image",
+      description: "Optional, not used in every theme or site.",
       options: {
         hotspot: true,
       },
     },
-    {
-      name: 'bio',
-      title: 'Bio',
-      type: 'array',
-      of: [
-        {
-          title: 'Block',
-          type: 'block',
-          styles: [{title: 'Normal', value: 'normal'}],
-          lists: [],
-        },
-      ],
-    },
   ],
   preview: {
     select: {
-      title: 'name',
-      media: 'image',
+      title: "name",
+      media: "image",
     },
   },
 }

@@ -33,6 +33,12 @@ export default {
    */
   modules: [],
   /*
+   ** Nuxt.js buildModules
+   */
+  buildModules: [
+      '@nuxtjs/composition-api/module'
+  ],
+  /*
    ** Build configuration
    */
   build: {

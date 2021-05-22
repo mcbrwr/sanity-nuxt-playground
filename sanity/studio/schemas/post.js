@@ -1,65 +1,82 @@
+import { format } from "date-fns"
+
 export default {
-  name: 'post',
-  title: 'Post',
-  type: 'document',
+  name: "post",
+  title: "Post",
+  type: "document",
   fields: [
     {
-      name: 'title',
-      title: 'Title',
-      type: 'string',
+      name: "title",
+      title: "Post Title",
+      type: "string",
+      validation: (Rule) => Rule.required(),
     },
     {
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
+      name: "slug",
+      title: "Post Slug",
+      description:
+        "This defines the posts link on your website relative to the post path set in theme options via Gatsby. For example a slug of 'wicked-awesome' would end up at mysite.com/posts/wicked-awesome' by default.",
+      type: "slug",
       options: {
-        source: 'title',
+        source: "title",
         maxLength: 96,
       },
+      validation: (Rule) => Rule.required(),
     },
     {
-      name: 'author',
-      title: 'Author',
-      type: 'reference',
-      to: {type: 'author'},
-    },
-    {
-      name: 'mainImage',
-      title: 'Main image',
-      type: 'image',
+      name: "date",
+      title: "Publication Date",
+      type: "date",
       options: {
-        hotspot: true,
+        dateFormat: "MMMM Do, YYYY",
       },
+      validation: (Rule) => Rule.required(),
     },
     {
-      name: 'categories',
-      title: 'Categories',
-      type: 'array',
-      of: [{type: 'reference', to: {type: 'category'}}],
+      name: "categories",
+      type: "array",
+      title: "Categories",
+      of: [
+        {
+          type: "reference",
+          to: [
+            {
+              type: "category",
+            },
+          ],
+        },
+      ],
     },
     {
-      name: 'publishedAt',
-      title: 'Published at',
-      type: 'datetime',
-    },
-    {
-      name: 'body',
-      title: 'Body',
-      type: 'blockContent',
+      name: "body",
+      title: "Post Content",
+      type: "blockContent",
     },
   ],
-
   preview: {
     select: {
-      title: 'title',
-      author: 'author.name',
-      media: 'mainImage',
+      title: "title",
+      date: "date",
     },
     prepare(selection) {
-      const {author} = selection
-      return Object.assign({}, selection, {
-        subtitle: author && `by ${author}`,
-      })
+      const { title, date } = selection
+      const formattedDate = new Date(date).toDateString()
+      return {
+        title: title,
+        subtitle: formattedDate,
+      }
     },
   },
+  orderings: [
+    {
+      title: "Publish Date Desc",
+      name: "dateDesc",
+      by: [{ field: "date", direction: "desc" }],
+    },
+    {
+      title: "Publish Date Asc",
+      name: "dateAsc",
+      by: [{ field: "date", direction: "asc" }],
+    },
+  ],
 }

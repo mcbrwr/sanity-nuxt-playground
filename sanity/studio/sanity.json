@@ -1,30 +1,29 @@
 {
   "root": true,
-  "project": {
-    "name": "vercel-nuxt-playground"
-  },
   "api": {
     "projectId": "22gbf1mn",
     "dataset": "production"
+  },
+  "project": {
+    "name": "pt"
   },
   "plugins": [
     "@sanity/base",
     "@sanity/components",
     "@sanity/default-layout",
     "@sanity/default-login",
-    "@sanity/desk-tool"
+    "@sanity/desk-tool",
+    "@sanity/color-input",
+    "@sanity/code-input"
   ],
-  "env": {
-    "development": {
-      "plugins": [
-        "@sanity/vision"
-      ]
-    }
-  },
   "parts": [
     {
       "name": "part:@sanity/base/schema",
-      "path": "./schemas/schema"
+      "path": "./schemas/schema.js"
+    },
+    {
+      "name": "part:@sanity/desk-tool/structure",
+      "path": "./structure/deskStructure.js"
     }
   ]
 }
